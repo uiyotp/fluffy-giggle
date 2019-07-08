@@ -1,0 +1,108 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NUnit.Framework;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Remote;
+using OpenQA.Selenium.Support.UI;
+
+namespace Tests
+{
+    public class Tests
+    {
+        IWebDriver Driver;
+
+        [SetUp]
+        public void Setup()
+        {
+            Driver = new ChromeDriver(@"C:\selenium");
+            //SelectElement oSelect = new SelectElement();
+            //SelectElement oSelect = new SelectElement(Driver.FindElement(By.Id("Country")));
+        }
+
+        [Test]
+        public void TeslaConfiguration()
+        {
+            Driver.Navigate().GoToUrl("https://www.tesla.com/");
+            Driver.Manage().Window.Maximize();
+            System.Threading.Thread.Sleep(2000);
+            Driver.FindElement(By.PartialLinkText("MODEL 3")).Click();
+            System.Threading.Thread.Sleep(1000);
+            try
+            {
+                Driver.FindElement(By.PartialLinkText("DESIGN YOURS")).Click();
+                System.Threading.Thread.Sleep(2000);
+            } catch { }        
+            
+            try
+            {
+                Driver.FindElement(By.PartialLinkText("ORDER NOW")).Click();
+                System.Threading.Thread.Sleep(2000);
+            } catch { }
+
+            try
+            {
+                Driver.FindElement(By.PartialLinkText("CUSTOM ORDER")).Click();
+                System.Threading.Thread.Sleep(2000);
+            }
+            catch { }
+            Actions action = new Actions(Driver);
+            action.MoveToElement(Driver.FindElement(By.ClassName("generic-group-recommended")));
+            action.MoveByOffset(50, 100).Perform();
+            action.Click();
+            action.MoveByOffset(1, 1).Perform();
+            System.Threading.Thread.Sleep(1000);
+            Driver.FindElement(By.XPath("//*[@data-id='btn-navigation']")).Click();
+            System.Threading.Thread.Sleep(1000);
+            Driver.FindElement(By.XPath("//*[@data-id='$PPSB']")).Click();
+            System.Threading.Thread.Sleep(1000);
+            Driver.FindElement(By.XPath("//*[@data-id='btn-navigation']")).Click();
+            System.Threading.Thread.Sleep(1000);
+            Driver.FindElement(By.XPath("//*[@data-id='btn-navigation']")).Click();
+            System.Threading.Thread.Sleep(1000);
+            Driver.FindElement(By.ClassName("group--options_card--checkbox--container")).Click();
+            System.Threading.Thread.Sleep(1000);
+            Driver.FindElement(By.XPath("//*[@data-id='btn-navigation']")).Click();
+            System.Threading.Thread.Sleep(1000);
+            Driver.FindElement(By.Id("FIRST_NAME")).SendKeys("Dwayne");
+            System.Threading.Thread.Sleep(1000);
+            Driver.FindElement(By.Id("LAST_NAME")).SendKeys("Johnson");
+            System.Threading.Thread.Sleep(1000);
+            Driver.FindElement(By.Id("EMAIL")).SendKeys("TheRock@gmail.com");
+            System.Threading.Thread.Sleep(1000);
+            Driver.FindElement(By.Id("PHONE_NUMBER")).SendKeys("262-843-7625");
+            System.Threading.Thread.Sleep(1000);
+            Driver.FindElement(By.Id("CREDIT_CARD")).SendKeys("2222 2222 2222 2222");
+            System.Threading.Thread.Sleep(1000);
+            Driver.FindElement(By.Id("EXPIRATION_DATE")).SendKeys("06/20");
+            System.Threading.Thread.Sleep(1000);
+            Driver.FindElement(By.Id("CVV")).SendKeys("343");
+            System.Threading.Thread.Sleep(1000);
+            Driver.FindElement(By.Id("BILLING_ZIPCODE")).SendKeys("53120");
+            System.Threading.Thread.Sleep(1000);
+            Driver.FindElement(By.Id("PASSWORD")).SendKeys("therockrocks4real");
+            System.Threading.Thread.Sleep(1000);
+            Driver.FindElement(By.ClassName("finance-content--modal")).Click();
+            System.Threading.Thread.Sleep(1000);
+            Driver.FindElement(By.XPath("//*[@for='finance-selected-tab_gas_savings']")).Click();
+            System.Threading.Thread.Sleep(1500);
+            Driver.FindElement(By.Id("distance")).Click();
+            Driver.FindElement(By.Id("distance")).SendKeys(Keys.Backspace + Keys.Backspace + Keys.Backspace + Keys.Backspace + Keys.Backspace + Keys.Backspace + "99999");
+            System.Threading.Thread.Sleep(1000);
+            Driver.FindElement(By.ClassName("finance-content--modal")).Click();
+            System.Threading.Thread.Sleep(1000);
+            Driver.Navigate().GoToUrl("https://cdn.shopify.com/s/files/1/0196/5170/files/IMG_5696_grande.JPG?v=1537704685");
+            System.Threading.Thread.Sleep(10000);
+            //Ends Test, Records it as a success
+            Assert.Pass("Test Successful");
+        }
+
+        [TearDown]
+        public void CloseBrowser()
+        {
+            Driver.Close();
+        }
+    }
+}

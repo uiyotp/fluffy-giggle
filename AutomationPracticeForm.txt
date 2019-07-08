@@ -1,0 +1,122 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NUnit.Framework;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Remote;
+using OpenQA.Selenium.Support.UI;
+
+namespace Tests
+{
+    public class Tests
+    {
+        IWebDriver Driver;
+
+        [SetUp]
+        public void Setup()
+        {
+            Driver = new ChromeDriver(@"C:\selenium");
+            //SelectElement oSelect = new SelectElement();
+            //SelectElement oSelect = new SelectElement(Driver.FindElement(By.Id("Country")));
+        }
+
+        [Test]
+        public void ToolsQA()
+        {
+            Driver.Navigate().GoToUrl("https://www.toolsqa.com/automation-practice-form/");
+            Driver.Manage().Window.Maximize();
+            //clicks link that leads back to main page
+            Driver.FindElement(By.PartialLinkText("Partial")).Click();
+
+            //clicks link to seperate page, then goes to facebook
+            Driver.FindElement(By.LinkText("Link Test")).Click();
+            System.Threading.Thread.Sleep(1000);
+            IWebElement element = Driver.FindElement(By.ClassName("facebook"));
+            Actions builder = new Actions(Driver);
+            builder.ContextClick(element).KeyDown(OpenQA.Selenium.Keys.Shift).Click(element).KeyUp(OpenQA.Selenium.Keys.Shift).Build().Perform();
+            System.Threading.Thread.Sleep(5000);
+
+            //Trys to log in to facebook
+            List<string> lstWindow = Driver.WindowHandles.ToList();
+            foreach (var handle in lstWindow)
+            {
+                Console.WriteLine(handle);
+                Driver.SwitchTo().Window(handle);
+            }
+            Driver.FindElement(By.Name("email")).SendKeys("ElonMusk@SpaceX.com");
+            System.Threading.Thread.Sleep(300);
+            Driver.FindElement(By.Name("pass")).SendKeys("TeslaRocks!");
+            System.Threading.Thread.Sleep(300);
+            Driver.FindElement(By.Id("loginbutton")).Submit();
+            System.Threading.Thread.Sleep(3000);
+
+            //Closes Facebook tab and return to main page
+            Driver.Close();
+            System.Threading.Thread.Sleep(1000);
+            List<string> stWindow = Driver.WindowHandles.ToList();
+            foreach (var handle in stWindow)
+            {
+                Console.WriteLine(handle);
+                Driver.SwitchTo().Window(handle);
+            }
+            Driver.Navigate().Back();
+            System.Threading.Thread.Sleep(1000);
+
+
+
+            //Enters Name text into text field
+            Driver.FindElement(By.Name("firstname")).SendKeys("Elon");
+            System.Threading.Thread.Sleep(300);
+            Driver.FindElement(By.Name("lastname")).SendKeys("Musk");
+            System.Threading.Thread.Sleep(300);
+
+            //Writes current url into output
+            Console.WriteLine(Driver.Url);
+
+            //Chooses gender
+            Driver.FindElement(By.Id("sex-0")).Click();
+            System.Threading.Thread.Sleep(300);
+
+            //Chooses level of experience
+            Driver.FindElement(By.Id("exp-0")).Click();
+            System.Threading.Thread.Sleep(300);
+
+            //Enters the day
+            Driver.FindElement(By.Id("datepicker")).SendKeys("06/28/19");
+            System.Threading.Thread.Sleep(300);
+
+            //Chooses which type of tester
+            Driver.FindElement(By.Id("profession-1")).Click();
+            System.Threading.Thread.Sleep(300);
+
+            //Uploads Profile Picture
+            Driver.FindElement(By.Id("photo")).SendKeys(@"C:\Tesla\Tesla.jpg");
+
+            //Chooses Selenium Webdriver from list
+            Driver.FindElement(By.Id("tool-2")).Click();
+            System.Threading.Thread.Sleep(300);
+
+            //Chooses Antartica from dropdown
+            Driver.FindElement(By.Name("continents")).SendKeys("Antartica");
+            System.Threading.Thread.Sleep(300);
+
+            //Chooses Navigation Commands from list
+            Driver.FindElement(By.Id("selenium_commands")).SendKeys("Navigation Commands");
+            System.Threading.Thread.Sleep(2300);
+
+            //Submits form
+            Driver.FindElement(By.Name("submit")).Submit();
+
+            //Ends Test, Records it as a success
+            Assert.Pass("Test Successful");
+        }
+
+        [TearDown]
+        public void CloseBrowser()
+        {
+            Driver.Close();
+        }
+    }
+}

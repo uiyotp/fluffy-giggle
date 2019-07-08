@@ -1,0 +1,184 @@
+using System;
+using NUnit.Framework;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Support.UI;
+
+namespace Tests
+{
+    public class Test3
+    {
+        IWebDriver Driver;
+
+        [SetUp]
+        public void Setup()
+        {
+            Driver = new ChromeDriver(@"C:\selenium");
+        }
+
+        [Test]
+        public void JQuery()
+        {
+            Driver.Navigate().GoToUrl("https://jqueryui.com/sortable/");
+            Driver.Manage().Window.Maximize();
+            System.Threading.Thread.Sleep(1000);
+            Driver.FindElement(By.PartialLinkText("grid")).Click();
+            System.Threading.Thread.Sleep(1000);
+            //Switches Driver focus to the frame with the grid inside
+            FrameSwitch();
+            //creates Action Driver to move 4
+            Actions Ac = new Actions(Driver);
+            //Locates number 4
+            IWebElement element = Driver.FindElement(By.XPath("//*[@id='sortable']/li[4]"));
+            //Grabs 4 and moves it to its final location
+            Ac.ClickAndHold(element);
+            Ac.MoveByOffset(-220, 0);
+            Ac.Build().Perform();
+            System.Threading.Thread.Sleep(1000);
+            Ac.Release().Perform();
+            System.Threading.Thread.Sleep(1000);
+            //Action Driver to move 5 to the right
+            Actions Ac2 = new Actions(Driver);
+            //Action Driver to move 5 up
+            Actions Ac3 = new Actions(Driver);
+            //locates number 5
+            IWebElement element2 = Driver.FindElement(By.XPath("//*[@id='sortable']/li[5]"));
+            //Grabs 5 and moves it to its final location
+            Ac2.ClickAndHold(element2);
+            Ac2.MoveByOffset(330, 0);
+            Ac2.Build().Perform();
+            System.Threading.Thread.Sleep(1000);
+            Ac3.MoveByOffset(0, -100);
+            Ac3.Release().Build().Perform();
+            System.Threading.Thread.Sleep(1000);
+            //Switches Drivers focus back to the window
+            WindowSwitch();
+            //Navigates to the image drag and drop
+            Driver.FindElement(By.XPath("//*[@id='sidebar']/aside[1]/ul/li[2]/a")).Click();
+            Driver.FindElement(By.XPath("//*[@id='content']/div[1]/ul/li[5]/a")).Click();
+            //Switches Driver to the frame with drag and drop inside
+            FrameSwitch();
+            //Presses the button to zoom on the image
+            Driver.FindElement(By.XPath("//*[@id='gallery']/li[1]/a[1]")).Click();
+            System.Threading.Thread.Sleep(1000);
+            //Scrolls to get a better view of the image
+            IJavaScriptExecutor js = (IJavaScriptExecutor)Driver;
+            js.ExecuteScript("window.scrollBy(0,125)");
+            System.Threading.Thread.Sleep(3000);
+            //Closes out of the enlarged image
+            IWebElement element3 = Driver.FindElement(By.ClassName("ui-button-icon-space"));
+            Actions actions = new Actions(Driver);
+            actions.MoveToElement(element3).Click().Perform();
+            System.Threading.Thread.Sleep(1000);
+            //Makes new Action Driver, Grabs the image and trashes it
+            IWebElement element4 = Driver.FindElement(By.XPath("//*[@id='gallery']/li[1]/img"));
+            Actions Action = new Actions(Driver);
+            Action.ClickAndHold(element4);
+            Action.MoveByOffset(350, 0);
+            Action.Build().Perform();
+            System.Threading.Thread.Sleep(1000);
+            Action.Release().Perform();
+            System.Threading.Thread.Sleep(1500);
+            //trashes other 3 pictures, just by clicking the button
+            Driver.FindElement(By.XPath("//*[@id='gallery']/li[1]/a[2]")).Click();
+            System.Threading.Thread.Sleep(1500);
+            Driver.FindElement(By.XPath("//*[@id='gallery']/li[1]/a[2]")).Click();
+            System.Threading.Thread.Sleep(1500);
+            Driver.FindElement(By.XPath("//*[@id='gallery']/li[1]/a[2]")).Click();
+            System.Threading.Thread.Sleep(1500);
+            //Switches Drivers focus back to the window
+            WindowSwitch();
+            //Navigates to resizable TextBox
+            Driver.FindElement(By.XPath("//*[@id='sidebar']/aside[1]/ul/li[3]/a")).Click();
+            Driver.FindElement(By.XPath("//*[@id='content']/div[1]/ul/li[9]/a")).Click();
+            //Switches Driver to the frame with resizable TextBox
+            FrameSwitch();
+            Driver.FindElement(By.Id("resizable")).SendKeys("We, therefore, the Representatives of the united States of America, in General Congress, Assembled, appealing to the Supreme Judge of the world for the rectitude of our intentions, " +
+                "do, in the Name, and by Authority of the good People of these Colonies, solemnly publish and declare, That these united Colonies are, and of Right ought to be Free and Independent States, " +
+                "that they are Absolved from all Allegiance to the British Crown, and that all political connection between them and the State of Great Britain, is and ought to be totally dissolved; and that as Free and Independent States, " +
+                "they have full Power to levy War, conclude Peace, contract Alliances, establish Commerce, and to do all other Acts and Things which Independent States may of right do. — And for the support of this Declaration, " +
+                "with a firm reliance on the protection of Divine Providence, we mutually pledge to each other our Lives, our Fortunes, and our sacred Honor.");
+            System.Threading.Thread.Sleep(1000);
+            IWebElement element5 = Driver.FindElement(By.CssSelector("[style^='z-index']"));
+            Actions Actio = new Actions(Driver);
+            Actio.ClickAndHold(element5);
+            Actio.MoveByOffset(350, 250);
+            Actio.Build().Perform();
+            System.Threading.Thread.Sleep(1000);
+            //Switches Drivers focus back to the window
+            WindowSwitch();
+            //Navigates to Checkboxes
+            Driver.FindElement(By.LinkText("Checkboxradio")).Click();
+            Driver.FindElement(By.XPath("//*[@id='content']/div[1]/ul/li[2]/a")).Click();
+            //Switches Driver to the frame with checkboxes
+            FrameSwitch();
+            //Selects preferences
+            Driver.FindElement(By.CssSelector("[for='radio-2']")).Click();
+            System.Threading.Thread.Sleep(500);
+            Driver.FindElement(By.CssSelector("[for='checkbox-2']")).Click();
+            System.Threading.Thread.Sleep(500);
+            Driver.FindElement(By.CssSelector("[for='checkbox-nested-4']")).Click();
+            System.Threading.Thread.Sleep(500);
+            //Back to the window
+            WindowSwitch();
+            Driver.FindElement(By.LinkText("Dialog")).Click();
+            Driver.FindElement(By.LinkText("Modal form")).Click();
+            FrameSwitch();
+            Driver.FindElement(By.Id("create-user")).Click();
+            System.Threading.Thread.Sleep(500);
+            Driver.FindElement(By.Id("name")).Clear();
+            System.Threading.Thread.Sleep(500);
+            Driver.FindElement(By.Id("name")).SendKeys("Rhett McLaughlin");
+            System.Threading.Thread.Sleep(500);
+            Driver.FindElement(By.Id("email")).Clear();
+            System.Threading.Thread.Sleep(500);
+            Driver.FindElement(By.Id("email")).SendKeys("Rhett@gmm.com");
+            System.Threading.Thread.Sleep(500);
+            Driver.FindElement(By.Id("password")).Clear();
+            System.Threading.Thread.Sleep(500);
+            Driver.FindElement(By.Id("password")).SendKeys("Myhairgoesup123");
+            System.Threading.Thread.Sleep(500);
+            Driver.FindElement(By.CssSelector("button:first-child")).Click();
+            System.Threading.Thread.Sleep(500);
+            WindowSwitch();
+            Driver.FindElement(By.LinkText("Tabs")).Click();
+            Driver.FindElement(By.LinkText("Simple manipulation")).Click();
+            FrameSwitch();
+            Driver.FindElement(By.Id("add_tab")).Click();
+            System.Threading.Thread.Sleep(500);
+            Driver.FindElement(By.Id("tab_title")).Clear();
+            System.Threading.Thread.Sleep(500);
+            Driver.FindElement(By.Id("tab_title")).SendKeys("Tesla Motors");
+            System.Threading.Thread.Sleep(500);
+            Driver.FindElement(By.Id("tab_content")).Clear();
+            System.Threading.Thread.Sleep(500);
+            Driver.FindElement(By.Id("tab_content")).SendKeys("Model 3 is fully electric, so you never need to visit a gas station again. If you charge overnight at home, you can wake up to a full battery every morning. " +
+                "And when you’re on the road, it’s easy to plug in along the way—at any public station or with the Tesla charging network. We currently have over 13,000 Superchargers worldwide, with six new locations opening every week.");
+            System.Threading.Thread.Sleep(500);
+            Driver.FindElement(By.CssSelector("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable.ui-resizable > div.ui-dialog-buttonpane.ui-widget-content.ui-helper-clearfix > div > button:nth-child(1)")).Click();
+            System.Threading.Thread.Sleep(1000);
+            Driver.FindElement(By.CssSelector("[href^='#tabs-2']")).Click();
+            System.Threading.Thread.Sleep(2000);
+
+            //Completes Test, Displays Success
+            Assert.Pass("Test Successful");
+        }
+
+        public void FrameSwitch()
+        {
+            Driver.SwitchTo().Frame(Driver.FindElement(By.ClassName("demo-frame")));
+        }
+
+        public void WindowSwitch()
+        {
+            Driver.SwitchTo().Window(Driver.CurrentWindowHandle);
+        }
+
+        [TearDown]
+        public void CloseBrowser()
+        {
+            Driver.Close();
+        }
+    }
+}

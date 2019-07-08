@@ -1,0 +1,118 @@
+using NUnit.Framework;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+
+namespace Tests
+{
+    public class Tests
+    {
+        //Creates a new Web Driver named "Driver"
+        IWebDriver Driver;
+
+        //Sets up test, pulls Driver code from my C drive
+        [SetUp]
+        public void Setup()
+        {
+            Driver = new ChromeDriver(@"C:\selenium");
+        }
+
+        //This is the test
+        [Test]
+        public void QuestionnaireForm()
+        {
+            //Navigates to the target website
+            Driver.Navigate().GoToUrl("https://www.jotform.com/build/91813935644161#preview");
+            Sleep();
+            //This Section fills out the form
+            Clicks("input_6_0");
+            SendKeyss("input_7", "E-mail");
+            Clicks("input_8_0");
+            Clicks("input_9_1");
+            SendKeyss("input_13", "Male");
+            ScrollDown();
+            SendKeyss("input_10", "Daily");
+            SendKeyss("input_11", "Daily");
+            SendKeyss("input_14", "Very Likely");
+            SendKeyss("input_15", "When in the Course of human events it becomes necessary for one people to dissolve the political bands which have connected" +
+                " them with another and to assume among the powers of the earth, the separate and equal station to which the Laws of Nature and of Nature's God entitle them," +
+                " a decent respect to the opinions of mankind requires that they should declare the causes which impel them to the separation.");
+            SendKeyss("input_16", "We hold these truths to be self-evident, that all men are created equal, that they are endowed by their Creator with certain unalienable Rights, " +
+                "that among these are Life, Liberty and the pursuit of Happiness. — That to secure these rights, Governments are instituted among Men, deriving their just powers from the consent of the governed, " +
+                "— That whenever any Form of Government becomes destructive of these ends, it is the Right of the People to alter or to abolish it, and to institute new Government, " +
+                "laying its foundation on such principles and organizing its powers in such form, as to them shall seem most likely to effect their Safety and Happiness. ");
+            SendKeyss("input_17", "Price");
+            ScrollDown();
+            SendKeyss("input_18", "Reputation");
+            SendKeyss("input_19", "Particular item");
+            SendKeyss("input_20", "Somewhat easy");
+            SendKeyss("input_21", "Daily");
+            SendKeyss("input_22", "Company purchase");
+            Clicks("input_30_0");
+            SendKeyss("input_24", "Satisfied");
+            ScrollDown();
+            SendKeyss("input_25", "Yes");
+            SendKeyss("input_26", "Yes");
+            Clicks("other_29");
+            SendKeyss("input_29", "Prudence, indeed, will dictate that Governments long established should not be changed for light and transient causes; and accordingly all experience hath shewn that mankind are more disposed to suffer, " +
+                "while evils are sufferable than to right themselves by abolishing the forms to which they are accustomed. But when a long train of abuses and usurpations, " +
+                "pursuing invariably the same Object evinces a design to reduce them under absolute Despotism, it is their right, it is their duty, to throw off such Government, and to provide new Guards for their future security. " +
+                "— Such has been the patient sufferance of these Colonies; and such is now the necessity which constrains them to alter their former Systems of Government. " +
+                "The history of the present King of Great Britain is a history of repeated injuries and usurpations, all having in direct object the establishment of an absolute Tyranny over these States. " +
+                "To prove this, let Facts be submitted to a candid world.");
+            SendKeyss("input_28", "Satisfied");
+            Clicks("input_31_0_4");
+            Clicks("input_31_1_4");
+            Clicks("input_31_2_3");
+            Clicks("input_31_3_0");
+            Clicks("input_31_4_0");
+            SendKeyss("input_32", "Very Competitive");
+            SendKeyss("input_33", "Good");
+            //The form is submitted
+            Clicks("input_2");
+            Slumber();
+            //Ends Test, Records it as a success
+            Assert.Pass("Test Successful");
+        }
+
+        //Click Method to simplify code
+        public void Clicks(string id)
+        {
+            Driver.FindElement(By.Id(id)).Click();
+            Sleep();
+        }
+
+        //SendKey Method to simplify code
+        public void SendKeyss(string id, string send)
+        {
+            Driver.FindElement(By.Id(id)).SendKeys(send);
+            Sleep();
+        }
+
+        //ScrollDown method
+        public void ScrollDown()
+        {
+            IJavaScriptExecutor js = (IJavaScriptExecutor)Driver;
+            js.ExecuteScript("window.scrollBy(0,750)");
+        }
+
+        //Sleep Method
+        public void Sleep()
+        {
+            System.Threading.Thread.Sleep(500);
+        }
+
+        //Slumber Method
+        public void Slumber()
+        {
+            System.Threading.Thread.Sleep(5000);
+        }
+
+
+        //This is run at the end of every test, it closes the browser
+        [TearDown]
+        public void CloseBrowser()
+        {
+            Driver.Close();
+        }
+    }
+}

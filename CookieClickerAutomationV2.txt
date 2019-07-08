@@ -1,0 +1,101 @@
+using System;
+using NUnit.Framework;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+
+namespace Tests
+{
+    public class Tests
+    {
+        IWebDriver Driver;
+        //keeps it clicking
+        int eternalClicks = 0;
+        int cookiemin = 15;
+        int cookieminderiv = 12;
+        int cookieminacc = -6;
+        int cookies = 0;
+        //cycles through upgrades
+        int productNumber = 0;
+        string devWebUrl = "https://dev.ecp123.com/login/?ignoreSessionCheck=true";
+        [SetUp]
+        public void Setup()
+        {
+            Driver = new ChromeDriver(@"C:\selenium");
+        }
+
+        [Test]
+        public void ColdfusionLoginChrome()
+        {
+            Driver.Navigate().GoToUrl("http://orteil.dashnet.org/cookieclicker/");
+            System.Threading.Thread.Sleep(5000);
+            while (eternalClicks <= 1000000)
+            {
+                Driver.FindElement(By.Id("bigCookie")).Click();
+                productNumber = 0;
+                cookies += 1;
+                if (cookies >= cookiemin)
+                {
+                    try
+                    {
+                            if (Driver.FindElement(By.Id("goldenCookie")).Displayed)
+                            {
+                                Driver.FindElement(By.Id("goldenCookie")).Click();
+                                productNumber = 100;
+
+                            }
+                        
+                    }
+                    catch { }
+
+                    try
+                    {
+                        if (Driver.FindElement(By.Id("upgrade0")).GetAttribute("Class") == "crate upgrade enabled")
+                        {
+                            if (Driver.FindElement(By.Id("upgrade0")).Displayed)
+                            {
+                                Driver.FindElement(By.Id("upgrade0")).Click();
+                                productNumber = 100;
+                                cookieminderiv += cookieminacc;
+                                cookiemin = 15;
+                                cookies = 0;
+                            }
+                        }
+                    }
+                    catch { }
+
+                    //cycles through products
+                    while (productNumber < 16)
+                    {
+                        try
+                        {
+                            if (Driver.FindElement(By.Id("product" + productNumber)).GetAttribute("Class") == "product unlocked enabled")
+                            {
+                                if (Driver.FindElement(By.Id("product" + productNumber)).Displayed)
+                                {
+                                    Driver.FindElement(By.Id("product" + productNumber)).Click();
+                                    productNumber = 100;
+                                    cookies = 0;
+                                    cookiemin += cookiemin/(cookieminderiv/2);
+                                }
+
+                            }
+                            productNumber += 1;
+                        }
+                        catch { }
+                    }
+                }
+                
+                    
+                
+
+            }
+            Assert.Pass();
+        }
+
+        [TearDown]
+        public void CloseBrowser()
+        {
+            Driver.Close();
+        }
+    }
+}
