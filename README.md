@@ -1,12 +1,19 @@
 # fluffy-giggle
 
-Collection of Selenium Files
+Collection of Selenium Files:
+
 using C#;
+
 using chromedriver;
+
 using .NET framework;
+
 using Selenium.Webdriver;
+
 using dotnetseleniumextras.waithelpers;
+
 using Nunit;
+
 using Nunit3testadapter;
 
 1.Tesla Model 3 Configuration Automated.
